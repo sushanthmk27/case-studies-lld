@@ -1,10 +1,12 @@
-package com.scaler;
+package com.scaler.model;
 
 /*
 Manages game board state and rules
  */
 public class Board {
     Cell[][] boardMatrix;
+
+    private static final int BOARD_SIZE = 3;
 
     public Board(Cell[][] boardMatrix){
         this.boardMatrix = boardMatrix;
@@ -62,6 +64,33 @@ public class Board {
             return false;
     }
 
+    //Check for draw conditions
+    public boolean checkIfDraw(){
+        return checkIfBoardIsFull();
+    }
 
+    /*
+    * Query Operations
+    */
+    //Check if the board is full - for now we will work for 3*3 size board - future scope is to make it dynamic
+    public boolean checkIfBoardIsFull() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (boardMatrix[i][j] == Cell.EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    // Get value at board position
+    public Cell getValAtPosition(int x, int y){
+        return boardMatrix[x][y];
+    }
+
+    //Get current board state
+    public Cell[][] getCurrentBoardState(){
+        return boardMatrix;
+    }
 }
