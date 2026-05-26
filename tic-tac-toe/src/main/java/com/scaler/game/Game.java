@@ -22,8 +22,8 @@ public class Game {
     }
 
     //Check the players turn and return the symbol accordingly
-    public Cell getCurrentPlayer(Cell currentMove){
-        if(currentMove == Cell.O){
+    public Cell getNextMoveSymbol(Cell currentMoveSymbol){
+        if(currentMoveSymbol == Cell.O){
             return Cell.X;
         }
         else{
