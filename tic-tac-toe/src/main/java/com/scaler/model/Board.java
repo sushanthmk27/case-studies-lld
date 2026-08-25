@@ -9,7 +9,6 @@ public class Board {
 
     private static final int ROW_SIZE = 3;
     private static final int COLUMN_SIZE = 3;
-
 //    public Board(Cell[][] boardMatrix){
 //        this.boardMatrix = boardMatrix;
 //    }
@@ -31,6 +30,10 @@ public class Board {
     // track which cells are occupied
     public boolean checkIfOccupied(int x, int y){
         System.out.println("Running checkIfOccupied()");
+        if(x>=ROW_SIZE || y>=COLUMN_SIZE){
+            System.out.println("Invalid cell position, try again"); //Custom Exception need to be added here
+            return false;
+        }
         return  boardMatrix[x][y] != Cell.EMPTY;
     }
 

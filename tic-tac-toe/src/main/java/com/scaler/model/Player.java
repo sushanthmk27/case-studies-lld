@@ -2,11 +2,12 @@ package com.scaler.model;
 
 //Future scope - can be turned into an interface to allow for different types of players (human, AI, etc.)
 public class Player {
-    private String name;
+    public String name;
 
-    private Cell symbol;
+    //public Cell symbol;
+    public char symbol;
 
-    public Player(String name, Cell symbol) {
+    public Player(String name, char symbol) {
         this.name = name;
         this.symbol = symbol;
     }
@@ -19,11 +20,11 @@ public class Player {
         this.name = name;
     }
 
-    public Cell getSymbol() {
+    public char getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(Cell symbol) {
+    public void setSymbol(char symbol) {
         this.symbol = symbol;
     }
 }
