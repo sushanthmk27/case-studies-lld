@@ -81,30 +81,37 @@ public class Game {
         //Player player = new Player();
         //For now we can hardcode the value for testing purpose
         //playerDetailList = new ArrayList<>();
-        playerDetailList.add(new Player("Alice", 'X'));
-        playerDetailList.add(new Player("Bob", 'O'));
+        playerDetailList.add(new Player("Alice", Cell.X));
+        playerDetailList.add(new Player("Bob", Cell.O));
 
         //playerDetailList.add(new Player(playerName, cellSymbol));
 
     }
 
-    //Switch turns for players
-    public Cell switchTurn(Cell currentMoveSymbol){
+    //Logic to switch turns for players
+    public int switchTurn(Cell currentMoveSymbol){
+        currentPlayerIndex = (currentPlayerIndex+1) & playerDetailList.size();
+        return currentPlayerIndex;
+    }
         //Logic need to be updated here
-        if(currentMoveSymbol ==  Cell.O){
+/*        if(currentMoveSymbol ==  Cell.O){
             System.out.println("Its your turn to play - X ");
             return Cell.X;
         }
         else{
             System.out.println("Its your turn to play - O ");
             return Cell.O;
-        }
+        }*/
+
+
+    public Player getCurrentPlayer(){
+        return playerDetailList.get(currentPlayerIndex);
     }
 
     /*Work on the game flow logic*/
     public void runGame(){
         //need to be updated to take the value in a dynamic way from the user input
-        Cell currentMoveSymbol = Cell.O;
+        Cell currentMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
         board.createAndResetToNewBoard();
         while(!checkIfGameOver(currentMoveSymbol)){
             board.getCurrentBoardState();
@@ -112,10 +119,12 @@ public class Game {
             //For position value we need to get it from the user input
             board.placeTheCurrentMoveOnBoard(0,0,currentMoveSymbol);
 
-            Cell nextMoveSymbol = switchTurn(currentMoveSymbol);
+            currentPlayerIndex = switchTurn(currentMoveSymbol);
+            Cell nextMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
             currentMoveSymbol = nextMoveSymbol;
         }
     }
+
 
 
 }

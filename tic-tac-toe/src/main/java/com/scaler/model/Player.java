@@ -5,9 +5,9 @@ public class Player {
     public String name;
 
     //public Cell symbol;
-    public char symbol;
+    public Cell symbol;
 
-    public Player(String name, char symbol) {
+    public Player(String name, Cell symbol) {
         this.name = name;
         this.symbol = symbol;
     }
@@ -20,11 +20,11 @@ public class Player {
         this.name = name;
     }
 
-    public char getSymbol() {
+    public Cell getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(char symbol) {
+    public void setSymbol(Cell symbol) {
         this.symbol = symbol;
     }
 }

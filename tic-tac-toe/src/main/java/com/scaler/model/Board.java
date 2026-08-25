@@ -1,11 +1,13 @@
 package com.scaler.model;
 
+import com.scaler.exception.OutOfRangeException;
+
 /*
 Manages game board state and rules
  */
 public class Board {
 
-    Cell[][] boardMatrix;
+    private Cell[][] boardMatrix;
 
     private static final int ROW_SIZE = 3;
     private static final int COLUMN_SIZE = 3;
@@ -28,11 +30,11 @@ public class Board {
     }
 
     // track which cells are occupied
-    public boolean checkIfOccupied(int x, int y){
+    public boolean checkIfOccupied(int x, int y) throws OutOfRangeException {
         System.out.println("Running checkIfOccupied()");
         if(x>=ROW_SIZE || y>=COLUMN_SIZE){
-            System.out.println("Invalid cell position, try again"); //Custom Exception need to be added here
-            return false;
+            System.out.println("Invalid cell position, try again");
+            throw new OutOfRangeException("Invalid cell position, try again");
         }
         return  boardMatrix[x][y] != Cell.EMPTY;
     }
@@ -42,7 +44,11 @@ public class Board {
     */
     //Place the move on the board and check if success or failure
     //public void placeTheCurrentMoveOnBoard(int x, int y, Cell currentMove) throws CellManagementException{
-    public boolean placeTheCurrentMoveOnBoard(int x, int y, Cell currentMove){
+    public boolean placeTheCurrentMoveOnBoard(int x, int y, Cell currentMove) throws OutOfRangeException{
+        if(x>=ROW_SIZE || y>=COLUMN_SIZE){
+            System.out.println("Invalid cell position, try again");
+            throw new OutOfRangeException("Invalid cell position, try again");
+        }
         if(checkIfOccupied(x,y)){
             //throw new CellManagementException("Cell is already occupied, try a different cell");
             System.out.println("Cell is already occupied, try a different cell");
