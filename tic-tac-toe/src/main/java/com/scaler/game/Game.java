@@ -111,13 +111,18 @@ public class Game {
     /*Work on the game flow logic*/
     public void runGame(){
         //need to be updated to take the value in a dynamic way from the user input
+        boolean movePlaced = false;
         Cell currentMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
-        board.createAndResetToNewBoard();
+        board.createAndResetToNewBoard();   // check this because we dont need to createAnd Reset the board each time the game is run, we can do it once in the constructor of the Game class
         while(!checkIfGameOver(currentMoveSymbol)){
             board.getCurrentBoardState();
 
             //For position value we need to get it from the user input
-            board.placeTheCurrentMoveOnBoard(0,0,currentMoveSymbol);
+            while(!movePlaced){
+                // Get position input from the user
+                // For now, we'll use hardcoded values for testing
+                movePlaced = board.placeTheCurrentMoveOnBoard(0,0,currentMoveSymbol); // method returns BOOLEAN value, hence if the returned value is false then we need to take the input from the user again for the same player
+            }
 
             currentPlayerIndex = switchTurn(currentMoveSymbol);
             Cell nextMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
