@@ -21,6 +21,8 @@ public class Game {
 
     private int currentPlayerIndex = 0;
 
+    Cell[][] gameBoardMatrix;
+
     public Game(Board board, Player player, Constants constants) {
         this.board = board;
         this.player = player;
@@ -85,12 +87,11 @@ public class Game {
         playerDetailList.add(new Player("Bob", Cell.O));
 
         //playerDetailList.add(new Player(playerName, cellSymbol));
-
     }
 
     //Logic to switch turns for players
     public int switchTurn(Cell currentMoveSymbol){
-        currentPlayerIndex = (currentPlayerIndex+1) & playerDetailList.size();
+        currentPlayerIndex = (currentPlayerIndex+1)%playerDetailList.size();
         return currentPlayerIndex;
     }
         //Logic need to be updated here
@@ -110,11 +111,13 @@ public class Game {
 
     /*Work on the game flow logic*/
     public void runGame(){
+        gameBoardMatrix = board.createAndResetToNewBoard();
         //need to be updated to take the value in a dynamic way from the user input
         boolean movePlaced = false;
         Cell currentMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
-        board.createAndResetToNewBoard();   // check this because we dont need to createAnd Reset the board each time the game is run, we can do it once in the constructor of the Game class
+        gameBoardMatrix = board.createAndResetToNewBoard();   // check this because we dont need to createAnd Reset the board each time the game is run, we can do it once in the constructor of the Game class
         while(!checkIfGameOver(currentMoveSymbol)){
+            //check if the below call is required or not, as we are already maintaining the board state in the game class
             board.getCurrentBoardState();
 
             //For position value we need to get it from the user input

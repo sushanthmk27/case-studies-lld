@@ -9,8 +9,11 @@ public class Board {
 
     private Cell[][] boardMatrix;
 
+    private Constants constants;
+
     private static final int ROW_SIZE = 3;
     private static final int COLUMN_SIZE = 3;
+
 //    public Board(Cell[][] boardMatrix){
 //        this.boardMatrix = boardMatrix;
 //    }
@@ -19,7 +22,7 @@ public class Board {
         State Management Operations
     */
     //Reset board for new game
-    public void createAndResetToNewBoard(){
+    public Cell[][] createAndResetToNewBoard(){
         boardMatrix = new Cell[ROW_SIZE][COLUMN_SIZE];  // default values will be 0 in each cell
         for(int i=0; i<ROW_SIZE; i++){
             for(int j=0; j<COLUMN_SIZE; j++){
@@ -27,12 +30,13 @@ public class Board {
             }
         }
         System.out.println("New Board Created!");
+        return boardMatrix;
     }
 
     // track which cells are occupied
     public boolean checkIfOccupied(int x, int y) throws OutOfRangeException {
         System.out.println("Running checkIfOccupied()");
-        if(x>=ROW_SIZE || y>=COLUMN_SIZE){
+        if(x<0 || y<0 || x>=ROW_SIZE || y>=COLUMN_SIZE){
             System.out.println("Invalid cell position, try again");
             throw new OutOfRangeException("Invalid cell position, try again");
         }
@@ -45,7 +49,7 @@ public class Board {
     //Place the move on the board and check if success or failure
     //public void placeTheCurrentMoveOnBoard(int x, int y, Cell currentMove) throws CellManagementException{
     public boolean placeTheCurrentMoveOnBoard(int x, int y, Cell currentMove) throws OutOfRangeException{
-        if(x>=ROW_SIZE || y>=COLUMN_SIZE){
+        if(x<0 || y<0 || x>=ROW_SIZE || y>=COLUMN_SIZE){
             System.out.println("Invalid cell position, try again");
             throw new OutOfRangeException("Invalid cell position, try again");
         }
@@ -65,6 +69,7 @@ public class Board {
     //We check for all 3 rows, 3 columns and 2 diagonals for a win condition
     // For future scope, update the code to take dynamic values so that the board size can be increased
     public boolean checkWinCondition(Cell currentMove){
+        System.out.println("Running checkWinCondition()");
             for(int i=0; i<3; i++){
                 if(boardMatrix[i][0] == currentMove && boardMatrix[i][1] == currentMove && boardMatrix[i][2] == currentMove){
                     System.out.println("Symbols in 1 row match");
@@ -92,7 +97,8 @@ public class Board {
     //Check for draw conditions
     public boolean checkIfDraw(){
         System.out.println("Running checkIfDraw()");
-        return checkIfBoardIsFull();
+        //return checkIfBoardIsFull(boardMatrix); // this condition wont validate if someone has already won the game, so we need to check for win condition as well
+        return checkIfBoardIsFull() && !checkWinCondition(Cell.X) && !checkWinCondition(Cell.O);
     }
 
     /*
@@ -112,13 +118,17 @@ public class Board {
         return true;
     }
 
-    // Get value at board position
-    public Cell getValAtPosition(int x, int y){
+    // Get value at board position - for now we will work for 3*3 size board - future scope is to make it dynamic - unused method currently
+    public Cell getValAtPosition(int x, int y) throws OutOfRangeException {
+        if(x<0 || y<0 || x>=ROW_SIZE || y>=COLUMN_SIZE){
+            System.out.println("Invalid cell position, try again");
+            throw new OutOfRangeException("Invalid cell position, try again");
+        }
         System.out.println("Symbol at the give position is - " + boardMatrix[x][y]);
         return boardMatrix[x][y];
     }
 
-    //Get current board state
+    //Get current board state - check if this is required or not, as we are already maintaining the board state in the game class
     public Cell[][] getCurrentBoardState(){
         System.out.println("Running getCurrentBoardState()");
         return boardMatrix;
