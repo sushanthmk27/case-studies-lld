@@ -44,7 +44,7 @@ public class Game {
     //Check if GameOver-Game completed
     public boolean checkIfGameOver(Cell currentMoveSymbol){
         if(board.checkWinCondition(currentMoveSymbol)){
-            System.out.println("Congratulations " + player.getName() + ", you win! and game is completed");
+            //System.out.println("Congratulations " + player.getName() + ", you win! and game is completed");
             return true;
         }
         else if(board.checkIfDraw()){
@@ -56,11 +56,13 @@ public class Game {
         }
     }
 
-    public String checkGameWinner(Cell currentMoveSymbol){
+    //Logic change required here, as we need to check the last person who played the game and check if he/she is the winner or not based on the state of the board
+    public String checkGameWinner(int playerIndex){
+        Cell playerMoveSymbol = playerDetailList.get(playerIndex).getSymbol();
         //Here we need to fetch the last person who played the game and check if he/she is the winner or not based on the state of the board
-        if(board.checkWinCondition(currentMoveSymbol)){
-            System.out.println("Congratulations " + player.getName() + ", wins the game!");
-            return player.getName();
+        if(board.checkWinCondition(playerMoveSymbol)){
+            System.out.println("Congratulations " + playerDetailList.get(playerIndex).getName() + ", wins the game!");
+            return playerDetailList.get(playerIndex).getName();
       //the below logic is not required
         }
        /* else if(board.checkIfDraw()){
@@ -68,7 +70,7 @@ public class Game {
             return null;
         }*/
         else{
-            return constants.GAME_CONTINUES;
+            return constants.GAME_OVER;
         }
 
     }
@@ -114,11 +116,13 @@ public class Game {
         gameBoardMatrix = board.createAndResetToNewBoard();
         //need to be updated to take the value in a dynamic way from the user input
         boolean movePlaced = false;
+
+        //by default the first player will be the one who is at index 0 in the playerDetailList, can be updated later to take the input from the user for who wants to play first
         Cell currentMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
-        gameBoardMatrix = board.createAndResetToNewBoard();   // check this because we dont need to createAnd Reset the board each time the game is run, we can do it once in the constructor of the Game class
-        while(!checkIfGameOver(currentMoveSymbol)){
+        //gameBoardMatrix = board.createAndResetToNewBoard();   // check this because we dont need to createAnd Reset the board each time the game is run, we can do it once in the constructor of the Game class
+        while(true){
             //check if the below call is required or not, as we are already maintaining the board state in the game class
-            board.getCurrentBoardState();
+            //board.getCurrentBoardState();
 
             //For position value we need to get it from the user input
             while(!movePlaced){
@@ -126,10 +130,21 @@ public class Game {
                 // For now, we'll use hardcoded values for testing
                 movePlaced = board.placeTheCurrentMoveOnBoard(0,0,currentMoveSymbol); // method returns BOOLEAN value, hence if the returned value is false then we need to take the input from the user again for the same player
             }
+            movePlaced = false; // reset the movePlaced flag for the next player's turn
+            if(checkIfGameOver(currentMoveSymbol)){
+                break;
+            }
 
             currentPlayerIndex = switchTurn(currentMoveSymbol);
             Cell nextMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
             currentMoveSymbol = nextMoveSymbol;
+        }
+        String winnerStatus = checkGameWinner(currentPlayerIndex);
+        if(winnerStatus.equals(constants.GAME_OVER)){
+            System.out.println("Game Over with no winner");
+        }
+        else{
+            System.out.println("Congratulations " + winnerStatus + ", wins the game!");
         }
     }
 
