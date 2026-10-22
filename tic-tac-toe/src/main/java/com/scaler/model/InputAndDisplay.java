@@ -22,7 +22,7 @@ public class InputAndDisplay {
                     cellValue = "O";
                 } else {
                     //System.out.print(board[i][j] + "  ");
-                    cellValue =  String.valueOf(i * Constants.COLUMN_SIZE * j + j + 1);
+                    cellValue =  String.valueOf(i * Constants.COLUMN_SIZE * j + 1);
                 }
 
                 System.out.println(" "+cellValue+" ");
