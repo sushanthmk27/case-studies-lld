@@ -4,10 +4,10 @@ package com.scaler.model;
 public class Player {
     public String name;
 
-    //public Cell symbol;
-    public Cell symbol;
+    //public CellState symbol;
+    public CellState symbol;
 
-    public Player(String name, Cell symbol) {
+    public Player(String name, CellState symbol) {
         this.name = name;
         this.symbol = symbol;
     }
@@ -20,11 +20,11 @@ public class Player {
         this.name = name;
     }
 
-    public Cell getSymbol() {
+    public CellState getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(Cell symbol) {
+    public void setSymbol(CellState symbol) {
         this.symbol = symbol;
     }
 }

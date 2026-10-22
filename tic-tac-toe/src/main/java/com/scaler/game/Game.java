@@ -1,9 +1,6 @@
 package com.scaler.game;
 
-import com.scaler.model.Board;
-import com.scaler.model.Cell;
-import com.scaler.model.Constants;
-import com.scaler.model.Player;
+import com.scaler.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +10,7 @@ public class Game {
 
     private final Player player;
 
-    //private final Cell cellSymbol;
+    //private final CellState cellSymbol;
 
     private final Constants constants;
 
@@ -21,7 +18,7 @@ public class Game {
 
     private int currentPlayerIndex = 0;
 
-    Cell[][] gameBoardMatrix;
+    CellState[][] gameBoardMatrix;
 
     public Game(Board board, Player player, Constants constants) {
         this.board = board;
@@ -32,17 +29,17 @@ public class Game {
     }
 
     //Check the players turn and return the symbol accordingly
-    public Cell getNextMoveSymbol(Cell currentMoveSymbol){
-        if(currentMoveSymbol == Cell.O || currentMoveSymbol == Cell.EMPTY){
-            return Cell.X;
+    public CellState getNextMoveSymbol(CellState currentMoveSymbol){
+        if(currentMoveSymbol == CellState.O || currentMoveSymbol == CellState.EMPTY){
+            return CellState.X;
         }
         else{
-            return Cell.O;
+            return CellState.O;
         }
     }
 
     //Check if GameOver-Game completed
-    public boolean checkIfGameOver(Cell currentMoveSymbol){
+    public boolean checkIfGameOver(CellState currentMoveSymbol){
         if(board.checkWinCondition(currentMoveSymbol)){
             //System.out.println("Congratulations " + player.getName() + ", you win! and game is completed");
             return true;
@@ -58,7 +55,7 @@ public class Game {
 
     //Logic change required here, as we need to check the last person who played the game and check if he/she is the winner or not based on the state of the board
     public String checkGameWinner(int playerIndex){
-        Cell playerMoveSymbol = playerDetailList.get(playerIndex).getSymbol();
+        CellState playerMoveSymbol = playerDetailList.get(playerIndex).getSymbol();
         //Here we need to fetch the last person who played the game and check if he/she is the winner or not based on the state of the board
         if(board.checkWinCondition(playerMoveSymbol)){
             System.out.println("Congratulations " + playerDetailList.get(playerIndex).getName() + ", wins the game!");
@@ -76,34 +73,34 @@ public class Game {
     }
 
     //Get the current board state to display to the user
-    public Cell[][] getCurrentBoardStateOnGame(){
+    public CellState[][] getCurrentBoardStateOnGame(){
         return board.getCurrentBoardState();
     }
     /// ////////////////////////////////////////////////////Check this method again
-    public void setNameAndSymbol(String playerName, Cell cellSymbol){
+    public void setNameAndSymbol(String playerName, CellState cellStateSymbol){
         // validation will be added while getting the input from the user
         //Player player = new Player();
         //For now we can hardcode the value for testing purpose
         //playerDetailList = new ArrayList<>();
-        playerDetailList.add(new Player("Alice", Cell.X));
-        playerDetailList.add(new Player("Bob", Cell.O));
+        playerDetailList.add(new Player("Alice", CellState.X));
+        playerDetailList.add(new Player("Bob", CellState.O));
 
-        //playerDetailList.add(new Player(playerName, cellSymbol));
+        //playerDetailList.add(new Player(playerName, cellStateSymbol));
     }
 
     //Logic to switch turns for players
-    public int switchTurn(Cell currentMoveSymbol){
+    public int switchTurn(CellState currentMoveSymbol){
         currentPlayerIndex = (currentPlayerIndex+1)%playerDetailList.size();
         return currentPlayerIndex;
     }
         //Logic need to be updated here
-/*        if(currentMoveSymbol ==  Cell.O){
+/*        if(currentMoveSymbol ==  CellState.O){
             System.out.println("Its your turn to play - X ");
-            return Cell.X;
+            return CellState.X;
         }
         else{
             System.out.println("Its your turn to play - O ");
-            return Cell.O;
+            return CellState.O;
         }*/
 
 
@@ -118,7 +115,12 @@ public class Game {
         boolean movePlaced = false;
 
         //by default the first player will be the one who is at index 0 in the playerDetailList, can be updated later to take the input from the user for who wants to play first
-        Cell currentMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
+        if(playerDetailList.isEmpty()){ //Add custom Exception for this case, as we are not able to start the game without players
+            System.out.println("No players available to start the game.");
+            throw new IllegalStateException("No players available to start the game.");
+            //return;
+        }
+        CellState currentMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
         //gameBoardMatrix = board.createAndResetToNewBoard();   // check this because we dont need to createAnd Reset the board each time the game is run, we can do it once in the constructor of the Game class
         while(true){
             //check if the below call is required or not, as we are already maintaining the board state in the game class
@@ -136,7 +138,7 @@ public class Game {
             }
 
             currentPlayerIndex = switchTurn(currentMoveSymbol);
-            Cell nextMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
+            CellState nextMoveSymbol = playerDetailList.get(currentPlayerIndex).getSymbol();
             currentMoveSymbol = nextMoveSymbol;
         }
         String winnerStatus = checkGameWinner(currentPlayerIndex);
